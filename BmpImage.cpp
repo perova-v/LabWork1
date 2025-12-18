@@ -55,14 +55,24 @@ void BmpImage::save(const std::string& filename) const {
 
     int w = infoHeader.biWidth;
     int h = std::abs(infoHeader.biHeight);
-    int padding = getPadding(w);
+    int padding = (4 - (w * sizeof(Pixel)) % 4) % 4;
 
-    BitmapFileHeader outFh = fileHeader;
+    BitmapFileHeader outFh;
     BitmapInfoHeader outIh = infoHeader;
+
+    outFh.bfType = 0x4D42;
+    outFh.bfReserved1 = 0;
+    outFh.bfReserved2 = 0;
+    outFh.bfOffBits = sizeof(BitmapFileHeader) + sizeof(BitmapInfoHeader);
 
     uint32_t dataSize = (w * sizeof(Pixel) + padding) * h;
     outFh.bfSize = outFh.bfOffBits + dataSize;
+
     outIh.biSizeImage = dataSize;
+    outIh.biSize = 40;
+    outIh.biPlanes = 1;
+    outIh.biBitCount = 24;
+    outIh.biCompression = 0;
 
     out.write(reinterpret_cast<const char*>(&outFh), sizeof(outFh));
     out.write(reinterpret_cast<const char*>(&outIh), sizeof(outIh));
