@@ -7,9 +7,15 @@ st141846@student.spbu.ru
 
 ## Description
 LabWork1 - Loading and processing raster images (BMP).
-Implemented features: image rotation (90 degrees clockwise and counter-clockwise); \n 
-gaussian blur filter (3x3 kernel); \n
-memory management using abstract base class `Image`; \n
+
+Implemented features: 
+
+image rotation (90 degrees clockwise and counter-clockwise); 
+
+gaussian blur filter (3x3 kernel);
+
+memory management using abstract base class `Image`;
+
 correct handling of BMP padding and headers.
 
 ## Build
@@ -26,6 +32,9 @@ make test
 
 ## Output
 The program will generate:
+
 `rotated_cw.bmp` (Rotated CW)
+
 `rotated_ccw.bmp` (Rotated CCW)
+
 `gaussian.bmp` (Gaussian Blur)

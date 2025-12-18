@@ -1,3 +1,9 @@
+/*
+ * Perova Varvara
+ * st141846@student.spbu.ru
+ * LabWork1
+ */
+
 #ifndef BMP_STRUCTURES_H
 #define BMP_STRUCTURES_H
 

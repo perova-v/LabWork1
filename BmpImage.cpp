@@ -1,3 +1,9 @@
+/*
+ * Perova Varvara
+ * st141846@student.spbu.ru
+ * LabWork1
+ */
+
 #include "BmpImage.h"
 #include <fstream>
 #include <stdexcept>

@@ -1,3 +1,9 @@
+/*
+ * Perova Varvara
+ * st141846@student.spbu.ru
+ * LabWork1
+ */
+
 #include <gtest/gtest.h>
 #include "BmpImage.h"
 

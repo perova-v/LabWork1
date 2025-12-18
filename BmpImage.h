@@ -1,3 +1,9 @@
+/*
+ * Perova Varvara
+ * st141846@student.spbu.ru
+ * LabWork1
+ */
+
 #ifndef BMP_IMAGE_H
 #define BMP_IMAGE_H
 
