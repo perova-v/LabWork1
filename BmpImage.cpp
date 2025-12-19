@@ -35,7 +35,7 @@ int BmpImage::getHeight() const
 
 int BmpImage::getPadding(int width) const
 {
-    return (4 - (width * sizeof(Pixel)) % 4) % 4;
+    return (ROW_ALIGNMENT - (width * sizeof(Pixel)) % ROW_ALIGNMENT) % ROW_ALIGNMENT;
 }
 
 void BmpImage::load(const std::string& filename)
@@ -44,10 +44,10 @@ void BmpImage::load(const std::string& filename)
     if (!in) throw std::runtime_error("File not found");
 
     in.read(reinterpret_cast<char*>(&fileHeader), sizeof(fileHeader));
-    if (fileHeader.bfType != 0x4D42) throw std::runtime_error("Not a BMP");
+    if (fileHeader.bfType != BMP_SIGNATURE) throw std::runtime_error("Not a BMP");
 
     in.read(reinterpret_cast<char*>(&infoHeader), sizeof(infoHeader));
-    if (infoHeader.biBitCount != 24) throw std::runtime_error("Only 24-bit supported");
+    if (infoHeader.biBitCount != BITS_PER_PIXEL) throw std::runtime_error("Only 24-bit supported");
 
     in.seekg(fileHeader.bfOffBits, std::ios::beg);
 
@@ -74,12 +74,12 @@ void BmpImage::save(const std::string& filename) const
 
     int w = infoHeader.biWidth;
     int h = std::abs(infoHeader.biHeight);
-    int padding = (4 - (w * sizeof(Pixel)) % 4) % 4;
+    int padding = getPadding(w);
 
     BitmapFileHeader outFh;
     BitmapInfoHeader outIh = infoHeader;
 
-    outFh.bfType = 0x4D42;
+    outFh.bfType = BMP_SIGNATURE;
     outFh.bfReserved1 = 0;
     outFh.bfReserved2 = 0;
     outFh.bfOffBits = sizeof(BitmapFileHeader) + sizeof(BitmapInfoHeader);
@@ -88,10 +88,10 @@ void BmpImage::save(const std::string& filename) const
     outFh.bfSize = outFh.bfOffBits + dataSize;
 
     outIh.biSizeImage = dataSize;
-    outIh.biSize = 40;
+    outIh.biSize = INFO_HEADER_SIZE;
     outIh.biPlanes = 1;
-    outIh.biBitCount = 24;
-    outIh.biCompression = 0;
+    outIh.biBitCount = BITS_PER_PIXEL;
+    outIh.biCompression = NO_COMPRESSION;
 
     out.write(reinterpret_cast<const char*>(&outFh), sizeof(outFh));
     out.write(reinterpret_cast<const char*>(&outIh), sizeof(outIh));
