@@ -33,8 +33,8 @@ make test
 ## Output
 The program will generate:
 
-`rotated_cw.bmp` (Rotated CW)
+`<input_file>_cw.bmp` (Rotated CW)
 
-`rotated_ccw.bmp` (Rotated CCW)
+`<input_file>_ccw.bmp` (Rotated CCW)
 
-`gaussian.bmp` (Gaussian Blur)
+`<input_file>_gaussian.bmp` (Gaussian Blur)

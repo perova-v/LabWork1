@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include "BmpImage.h"
+#include <filesystem>
 
 int main(int argc, char* argv[])
 {
@@ -19,24 +20,32 @@ int main(int argc, char* argv[])
 
         std::string inputFile = argv[1];
 
+        std::filesystem::path path(inputFile);
+        std::string baseName = path.stem().string();
+
         BmpImage img;
         img.load(inputFile);
         std::cout << "Image loaded. Size: " << img.getWidth() << "x" << img.getHeight() << std::endl;
 
         BmpImage imgCW = img;
         imgCW.rotate90CW();
-        imgCW.save("rotated_cw.bmp");
-        std::cout << "Saved rotated_cw.bmp" << std::endl;
+
+	std::string nameCW = baseName + "_cw.bmp";
+        imgCW.save(nameCW);
+        std::cout << "Saved " << nameCW << std::endl;
 
         BmpImage imgCCW = img;
         imgCCW.rotate90CCW();
-        imgCCW.save("rotated_ccw.bmp");
-        std::cout << "Saved rotated_ccw.bmp" << std::endl;
+
+	std::string nameCCW = baseName + "_ccw.bmp";
+        imgCCW.save(nameCCW);
+        std::cout << "Saved " << nameCCW << std::endl;
 
         BmpImage imgGauss = img;
         imgGauss.applyGaussianFilter();
-        imgGauss.save("gaussian.bmp");
-        std::cout << "Saved gaussian.bmp" << std::endl;
+	std::string nameGaussian = baseName + "_gaussian.bmp";
+        imgGauss.save(nameGaussian);
+        std::cout << "Saved " << nameGaussian << std::endl;
 
     }
     catch (const std::exception& e)
