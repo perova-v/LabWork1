@@ -7,9 +7,12 @@
 #include <iostream>
 #include "BmpImage.h"
 
-int main(int argc, char* argv[]) {
-    try {
-        if (argc < 2) {
+int main(int argc, char* argv[])
+{
+    try
+    {
+        if (argc < 2)
+        {
             std::cout << "Usage: ./lab1 <input_file.bmp>" << std::endl;
             return 1;
         }
@@ -35,7 +38,9 @@ int main(int argc, char* argv[]) {
         imgGauss.save("gaussian.bmp");
         std::cout << "Saved gaussian.bmp" << std::endl;
 
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception& e)
+    {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }

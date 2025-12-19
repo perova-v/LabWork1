@@ -9,7 +9,8 @@
 
 #include <string>
 
-class Image {
+class Image
+{
 public:
     virtual ~Image() = default;
 

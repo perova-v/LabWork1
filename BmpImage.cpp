@@ -11,25 +11,35 @@
 #include <algorithm>
 #include <cmath>
 
-BmpImage::BmpImage() {
+BmpImage::BmpImage()
+{
     fileHeader = {};
     infoHeader = {};
 }
 
-BmpImage::BmpImage(int w, int h, const std::vector<Pixel>& p) {
+BmpImage::BmpImage(int w, int h, const std::vector<Pixel>& p)
+{
     infoHeader.biWidth = w;
     infoHeader.biHeight = h;
     pixels = p;
 }
 
-int BmpImage::getWidth() const { return infoHeader.biWidth; }
-int BmpImage::getHeight() const { return infoHeader.biHeight; }
+int BmpImage::getWidth() const
+{
+    return infoHeader.biWidth;
+}
+int BmpImage::getHeight() const
+{
+    return infoHeader.biHeight;
+}
 
-int BmpImage::getPadding(int width) const {
+int BmpImage::getPadding(int width) const
+{
     return (4 - (width * sizeof(Pixel)) % 4) % 4;
 }
 
-void BmpImage::load(const std::string& filename) {
+void BmpImage::load(const std::string& filename)
+{
     std::ifstream in(filename, std::ios::binary);
     if (!in) throw std::runtime_error("File not found");
 
@@ -47,15 +57,18 @@ void BmpImage::load(const std::string& filename) {
 
     pixels.resize(w * h);
 
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y)
+    {
+        for (int x = 0; x < w; ++x)
+        {
             in.read(reinterpret_cast<char*>(&pixels[y * w + x]), sizeof(Pixel));
         }
         in.ignore(padding);
     }
 }
 
-void BmpImage::save(const std::string& filename) const {
+void BmpImage::save(const std::string& filename) const
+{
     std::ofstream out(filename, std::ios::binary);
     if (!out) throw std::runtime_error("Cannot create file");
 
@@ -84,23 +97,29 @@ void BmpImage::save(const std::string& filename) const {
     out.write(reinterpret_cast<const char*>(&outIh), sizeof(outIh));
 
     uint8_t padByte = 0;
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y)
+    {
+        for (int x = 0; x < w; ++x)
+        {
             out.write(reinterpret_cast<const char*>(&pixels[y * w + x]), sizeof(Pixel));
         }
-        for (int k = 0; k < padding; ++k) {
+        for (int k = 0; k < padding; ++k)
+        {
             out.write(reinterpret_cast<const char*>(&padByte), 1);
         }
     }
 }
 
-void BmpImage::rotate90CW() {
+void BmpImage::rotate90CW()
+{
     int w = infoHeader.biWidth;
     int h = infoHeader.biHeight;
     std::vector<Pixel> newPixels(w * h);
 
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y)
+    {
+        for (int x = 0; x < w; ++x)
+        {
             int newX = y;
             int newY = w - 1 - x;
             newPixels[newY * h + newX] = pixels[y * w + x];
@@ -111,13 +130,16 @@ void BmpImage::rotate90CW() {
     std::swap(infoHeader.biWidth, infoHeader.biHeight);
 }
 
-void BmpImage::rotate90CCW() {
+void BmpImage::rotate90CCW()
+{
     int w = infoHeader.biWidth;
     int h = infoHeader.biHeight;
     std::vector<Pixel> newPixels(w * h);
 
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y)
+    {
+        for (int x = 0; x < w; ++x)
+        {
 
             int newX = h - 1 - y;
             int newY = x;
@@ -129,23 +151,29 @@ void BmpImage::rotate90CCW() {
     std::swap(infoHeader.biWidth, infoHeader.biHeight);
 }
 
-void BmpImage::applyGaussianFilter() {
+void BmpImage::applyGaussianFilter()
+{
     int w = infoHeader.biWidth;
     int h = infoHeader.biHeight;
     std::vector<Pixel> result = pixels;
 
-    const double kernel[3][3] = {
+    const double kernel[3][3] =
+    {
         {0.075, 0.124, 0.075},
         {0.124, 0.204, 0.124},
         {0.075, 0.124, 0.075}
     };
 
-    for (int y = 0; y < h; ++y) {
-        for (int x = 0; x < w; ++x) {
+    for (int y = 0; y < h; ++y)
+    {
+        for (int x = 0; x < w; ++x)
+        {
             double r = 0, g = 0, b = 0;
 
-            for (int ky = -1; ky <= 1; ++ky) {
-                for (int kx = -1; kx <= 1; ++kx) {
+            for (int ky = -1; ky <= 1; ++ky)
+            {
+                for (int kx = -1; kx <= 1; ++kx)
+                {
                     int py = std::clamp(y + ky, 0, h - 1);
                     int px = std::clamp(x + kx, 0, w - 1);
 
@@ -166,7 +194,8 @@ void BmpImage::applyGaussianFilter() {
     pixels = result;
 }
 
-Pixel BmpImage::getPixel(int x, int y) const {
+Pixel BmpImage::getPixel(int x, int y) const
+{
     if (x < 0 || x >= infoHeader.biWidth || y < 0 || y >= infoHeader.biHeight)
         return {0,0,0};
     return pixels[y * infoHeader.biWidth + x];

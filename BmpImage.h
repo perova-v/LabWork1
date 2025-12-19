@@ -11,7 +11,8 @@
 #include "BmpStructures.h"
 #include <vector>
 
-class BmpImage : public Image {
+class BmpImage : public Image
+{
 public:
     BmpImage();
     BmpImage(int w, int h, const std::vector<Pixel>& p);

@@ -11,7 +11,8 @@
 
 #pragma pack(push, 1)
 
-struct BitmapFileHeader {
+struct BitmapFileHeader
+{
     uint16_t bfType;
     uint32_t bfSize;
     uint16_t bfReserved1;
@@ -19,7 +20,8 @@ struct BitmapFileHeader {
     uint32_t bfOffBits;
 };
 
-struct BitmapInfoHeader {
+struct BitmapInfoHeader
+{
     uint32_t biSize;
     int32_t  biWidth;
     int32_t  biHeight;
@@ -33,7 +35,8 @@ struct BitmapInfoHeader {
     uint32_t biClrImportant;
 };
 
-struct Pixel {
+struct Pixel
+{
     uint8_t b;
     uint8_t g;
     uint8_t r;
