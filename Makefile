@@ -34,4 +34,4 @@ format:
 	astyle -A1 -s4 *.cpp *.h
 
 clean:
-	rm -f *.o $(PROJECT) $(TESTPROJECT) *.orig *.bmp
+	rm -f *.o $(PROJECT) $(TESTPROJECT) *.orig
